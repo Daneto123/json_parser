@@ -1,7 +1,13 @@
 build/
+build-*/
+out/
+cmake-build-*/
+CMakeLists.txt.user*
+.vs/
 .vscode/
-
+.idea/
 *.o
 *.obj
 *.exe
 *.out
+*.tmp

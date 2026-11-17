@@ -1,20 +1,12 @@
 #!/bin/bash
-
-echo "Cleaning build directory..."
-rm -rf build
-
-echo "Creating build directory..."
-mkdir build
-
-cd build
-
-echo "Running CMake..."
-cmake ..
-
-echo "Building project..."
-make -j$(nproc)
-
-echo "Build completed successfully."
-
-cd ../build
-./json_gui
+# Компилира и пуска прозореца (Linux / macOS). На Windows: отворете
+# CMakeLists.txt в Qt Creator или Visual Studio.
+set -e
+cmake -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build -j
+ctest --test-dir build --output-on-failure
+if [ -x build/json_gui ]; then
+    ./build/json_gui "$@"
+else
+    ./build/json_cli "$@"
+fi
