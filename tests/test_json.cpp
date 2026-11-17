@@ -1,5 +1,6 @@
 // Tests without external libraries: a tiny CHECK macro and a list of cases.
 
+#include <algorithm>
 #include <cstdio>
 #include <filesystem>
 #include <functional>
@@ -141,7 +142,8 @@ void test_error_describe() {
 
 void test_write_round_trip() {
     for (const char* name : {"person.json", "library.json"}) {
-        const std::string text = readTextFile(example(name));
+        std::string text = readTextFile(example(name));
+        text.erase(std::remove(text.begin(), text.end(), '\r'), text.end());  // Windows line endings
         const Value v = parse(text);
         CHECK_EQ(write(v), text);  // the examples are already formatted with 2 spaces
         CHECK(parse(write(v, 0)) == v);
